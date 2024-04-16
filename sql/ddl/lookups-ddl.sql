@@ -1,4 +1,4 @@
-/* Lookup Tables */
+/* Lookups */
 /* Tables that hold stable categories of information, such as instrument names, etc. */
 
 CREATE SCHEMA lookups;
