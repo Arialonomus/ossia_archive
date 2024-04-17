@@ -79,3 +79,10 @@ VALUES
     ('B major', 'Major'),  ('G sharp minor', 'Minor'), ('D flat major', 'Major'), ('B flat minor', 'Minor'),
     ('F sharp major', 'Major'), ('D sharp minor', 'Minor'),  ('G flat major', 'Major'), ('E flat minor', 'Minor'),
     ('C sharp major', 'Major'), ('A sharp minor', 'Minor'), ('C flat major', 'Major'), ('A flat minor', 'Minor');
+
+-- Style
+/* The style (sometimes form or genre) of a given composition */
+CREATE TABLE lookups.composition_style (
+    style_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    style_name TEXT NOT NULL
+);
