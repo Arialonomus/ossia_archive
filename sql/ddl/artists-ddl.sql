@@ -17,8 +17,8 @@ CREATE TABLE artists.performer (
 CREATE TABLE artists.artist (
     artist_id INT PRIMARY KEY REFERENCES artists.performer (performer_id)
         ON DELETE CASCADE,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
     birth_date DATE NOT NULL,
     death_date DATE
 );
@@ -39,7 +39,7 @@ CREATE TABLE artists.artist_instrument (
 CREATE TABLE artists.ensemble (
     ensemble_id INT PRIMARY KEY REFERENCES artists.performer (performer_id)
         ON DELETE CASCADE,
-    ensemble_name VARCHAR(255),
+    ensemble_name TEXT,
     year_founded INT NOT NULL
 );
 
@@ -53,7 +53,7 @@ CREATE TABLE artists.ensemble_member (
         ON DELETE CASCADE,
     year_joined INT NOT NULL,
     year_departed INT,
-    role VARCHAR(100),
+    role TEXT,
     UNIQUE (ensemble_id, artist_id, year_joined)
 );
 

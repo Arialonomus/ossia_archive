@@ -8,7 +8,7 @@ CREATE SCHEMA lookups;
    Used for grouping instruments to aid in display and selection. */
 CREATE TABLE lookups.instrument_family (
     family_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    family_name VARCHAR(25) NOT NULL
+    family_name VARCHAR(12) NOT NULL
 );
 
 INSERT INTO lookups.instrument_family (family_name)
@@ -30,7 +30,7 @@ VALUES
 /* The register (i.e. Piccolo, Tenor, Contrabass) for a transposing instrument */
 CREATE TABLE lookups.instrument_register (
     register_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    register_name VARCHAR(25)
+    register_name VARCHAR(20)
 );
 
 INSERT INTO lookups.instrument_register (register_name)
@@ -43,7 +43,7 @@ VALUES
 CREATE TABLE lookups.base_instrument(
     family_id INT NOT NULL REFERENCES lookups.instrument_family (family_id),
     base_inst_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    base_inst_name VARCHAR(50) NOT NULL
+    base_inst_name TEXT NOT NULL
 );
 
 -- Transposing Instrument
@@ -65,8 +65,8 @@ CREATE TABLE lookups.transposing_instrument (
 /* The key signature for a given composition */
 CREATE TABLE lookups.key_signature (
     key_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    key_name VARCHAR(25) NOT NULL,
-    key_type VARCHAR(6) NOT NULL,
+    key_name VARCHAR(16) NOT NULL,
+    key_type VARCHAR(8) NOT NULL,
     CHECK (key_type = 'Major' OR key_type = 'Minor')
 );
 
