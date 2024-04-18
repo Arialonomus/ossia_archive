@@ -27,30 +27,14 @@ INSERT INTO lookups.instrument_key (key_name)
 VALUES
     ('A'), ('A flat'), ('B'), ('B flat'), ('C'), ('D'), ('D flat'), ('E'), ('E flat'), ('F'), ('G');
 
--- Instrument Register
-/* The register (i.e. Piccolo, Tenor, Contrabass) for a transposing instrument */
-CREATE TABLE lookups.instrument_register (
-    register_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    register_name VARCHAR(20) NOT NULL UNIQUE
-);
-
-INSERT INTO lookups.instrument_register (register_name)
-VALUES
-    ('Piccolo'), ('Treble'), ('Soprillo'), ('Sopranino'), ('Soprano'), ('Alto'), ('Contra-alto'), ('Tenor'),
-    ('Baritone'), ('Bass'), ('Contrabass'), ('Subcontrabass'), ('Double contrabass');
-
 -- Instrument
-/* A single musical instrument, such as a trumpet or piano,
-   can optionally include a register ID for instruments that have register variants
-   such as a piccolo flute or bass trombone */
+/* A single musical instrument, such as a trumpet or piano */
 CREATE TABLE lookups.instrument(
     instrument_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     family_id INT NOT NULL REFERENCES lookups.instrument_family (family_id),
-    register_id INT REFERENCES lookups.instrument_register (register_id),
-    instrument_name TEXT NOT NULL,
-    -- Alternative names used to refer to the same instrument (such as English Horn and Cor Anglais)
-    instrument_aliases TEXT[],
-    UNIQUE (register_id, instrument_name)
+    instrument_name TEXT NOT NULL UNIQUE,
+    instrument_aliases TEXT[], -- Alternative names used to refer to the same instrument
+    score_position INT NOT NULL DEFAULT 99 -- Used to sort instrument families by standard score ordering
 );
 
 -- Transposing Instrument (Intersection Table)
