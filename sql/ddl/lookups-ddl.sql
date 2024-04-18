@@ -46,6 +46,14 @@ CREATE TABLE lookups.transposing_instrument (
     PRIMARY KEY (instrument_id, key_id)
 );
 
+-- Instrumentation
+/* Common instrumentation names, such as "String Quartet" or "Orchestra" */
+CREATE TABLE lookups.instrumentation (
+    instrumentation_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    instrumentation_name TEXT NOT NULL UNIQUE,
+    instrumentation_aliases TEXT[] -- Alternative names used to refer to the same instrumentation
+);
+
 -- Key Signature
 /* The key signature for a given composition */
 CREATE TABLE lookups.key_signature (
