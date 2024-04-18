@@ -67,19 +67,18 @@ CREATE TABLE lookups.transposing_instrument (
 CREATE TABLE lookups.key_signature (
     key_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     key_name VARCHAR(16) NOT NULL UNIQUE,
-    key_type VARCHAR(8) NOT NULL,
-    CHECK (key_type = 'Major' OR key_type = 'Minor')
+    is_major BOOL NOT NULL
 );
 
-INSERT INTO lookups.key_signature (key_name, key_type)
+INSERT INTO lookups.key_signature (key_name, is_major)
 VALUES
-    ('C major', 'Major'), ('A minor', 'Minor'), ('G major', 'Major'), ('E minor', 'Minor'), ('F major', 'Major'),
-    ('D minor', 'Minor'), ('D major', 'Major'), ('B minor', 'Minor'), ('B flat major', 'Major'), ('G minor', 'Minor'),
-    ('A major', 'Major'), ('F sharp minor', 'Minor'), ('E flat major', 'Major'), ('C minor', 'Minor'),
-    ('E major', 'Major'), ('C sharp minor', 'Minor'), ('A flat major', 'Major'), ('F minor', 'Minor'),
-    ('B major', 'Major'),  ('G sharp minor', 'Minor'), ('D flat major', 'Major'), ('B flat minor', 'Minor'),
-    ('F sharp major', 'Major'), ('D sharp minor', 'Minor'),  ('G flat major', 'Major'), ('E flat minor', 'Minor'),
-    ('C sharp major', 'Major'), ('A sharp minor', 'Minor'), ('C flat major', 'Major'), ('A flat minor', 'Minor');
+    ('C major', true), ('A minor', false), ('G major', true), ('E minor', false), ('F major', true),
+    ('D minor', false), ('D major', true), ('B minor', false), ('B flat major', true), ('G minor', false),
+    ('A major', true), ('F sharp minor', false), ('E flat major', true), ('C minor', false),
+    ('E major', true), ('C sharp minor', false), ('A flat major', true), ('F minor', false),
+    ('B major', true),  ('G sharp minor', false), ('D flat major', true), ('B flat minor', false),
+    ('F sharp major', true), ('D sharp minor', false),  ('G flat major', true), ('E flat minor', false),
+    ('C sharp major', true), ('A sharp minor', false), ('C flat major', true), ('A flat minor', false);
 
 -- Style
 /* The style (sometimes form or genre) of a given composition */
