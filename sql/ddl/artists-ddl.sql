@@ -16,8 +16,7 @@ CREATE TABLE artists.performer (
    solo artist involved in the production of a composition or recording */
 CREATE TABLE artists.artist (
     artist_id INT PRIMARY KEY REFERENCES artists.performer (performer_id),
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
+    artist_name full_name NOT NULL,
     birth_date DATE NOT NULL,
     death_date DATE
 );
