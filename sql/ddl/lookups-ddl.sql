@@ -8,7 +8,7 @@ CREATE SCHEMA lookups;
    Used for grouping instruments to aid in display and selection. */
 CREATE TABLE lookups.instrument_family (
     family_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    family_name VARCHAR(12) NOT NULL
+    family_name VARCHAR(12) NOT NULL UNIQUE
 );
 
 INSERT INTO lookups.instrument_family (family_name)
@@ -16,10 +16,11 @@ VALUES
     ('Woodwind'), ('Brass'), ('String'), ('Keyboard'), ('Percussion'), ('Voice'), ('Other');
 
 -- Instrument Key
-/* The musical key for a transposing instrument, used when describing detailed instrumentation for a composition */
+/* The musical key for a transposing instrument, used when
+   describing detailed instrumentation for a composition */
 CREATE TABLE lookups.instrument_key (
     key_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    key_name VARCHAR(8)
+    key_name VARCHAR(8) NOT NULL UNIQUE
 );
 
 INSERT INTO lookups.instrument_key (key_name)
@@ -30,7 +31,7 @@ VALUES
 /* The register (i.e. Piccolo, Tenor, Contrabass) for a transposing instrument */
 CREATE TABLE lookups.instrument_register (
     register_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    register_name VARCHAR(20)
+    register_name VARCHAR(20) NOT NULL UNIQUE
 );
 
 INSERT INTO lookups.instrument_register (register_name)
@@ -39,33 +40,33 @@ VALUES
     ('Baritone'), ('Bass'), ('Contrabass'), ('Subcontrabass'), ('Double contrabass');
 
 -- Instrument
-/* A general form of a single musical instrument, such as a trumpet or flute */
-CREATE TABLE lookups.base_instrument(
+/* A single musical instrument, such as a trumpet or piano,
+   can optionally include a register ID for instruments that have register variants
+   such as a piccolo flute or bass trombone */
+CREATE TABLE lookups.instrument(
+    instrument_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     family_id INT NOT NULL REFERENCES lookups.instrument_family (family_id),
-    base_inst_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    base_inst_name TEXT NOT NULL
+    register_id INT REFERENCES lookups.instrument_register (register_id),
+    instrument_name TEXT NOT NULL,
+    -- Alternative names used to refer to the same instrument (such as English Horn and Cor Anglais)
+    instrument_aliases TEXT[],
+    UNIQUE (register_id, instrument_name)
 );
 
--- Transposing Instrument
-/* A variant form of a base instrument, such as a Piccolo Flute or Trumpet in B flat, used in the detailed
-   instrumentation for a given composition.
-   NOTE: Some transposing instruments, such as the English Horn, fall outside the standard naming conventions for
-   transposing instruments and are thus considered Base Instruments for the purposes of the data model */
+-- Transposing Instrument (Intersection Table)
+/* A variant of an instrument that can be pitched to different keys,
+   such as a French Horn in F or a Clarinet in A flat */
 CREATE TABLE lookups.transposing_instrument (
-    transposing_inst_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    base_inst_id INT NOT NULL REFERENCES lookups.base_instrument (base_inst_id)
-        ON DELETE CASCADE,
-    register_id INT REFERENCES lookups.instrument_register (register_id),
+    instrument_id INT NOT NULL REFERENCES lookups.instrument (instrument_id),
     key_id INT REFERENCES lookups.instrument_key (key_id),
-    CHECK (register_id IS NOT NULL OR key_id IS NOT NULL),
-    UNIQUE (base_inst_id, register_id, key_id)
+    PRIMARY KEY (instrument_id, key_id)
 );
 
 -- Key Signature
 /* The key signature for a given composition */
 CREATE TABLE lookups.key_signature (
     key_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    key_name VARCHAR(16) NOT NULL,
+    key_name VARCHAR(16) NOT NULL UNIQUE,
     key_type VARCHAR(8) NOT NULL,
     CHECK (key_type = 'Major' OR key_type = 'Minor')
 );

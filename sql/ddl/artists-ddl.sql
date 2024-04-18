@@ -15,8 +15,7 @@ CREATE TABLE artists.performer (
 /* A conductor, composer, musician, singer, or other type of
    solo artist involved in the production of a composition or recording */
 CREATE TABLE artists.artist (
-    artist_id INT PRIMARY KEY REFERENCES artists.performer (performer_id)
-        ON DELETE CASCADE,
+    artist_id INT PRIMARY KEY REFERENCES artists.performer (performer_id),
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     birth_date DATE NOT NULL,
@@ -29,7 +28,7 @@ CREATE TABLE artists.artist (
 CREATE TABLE artists.artist_instrument (
     artist_id INT NOT NULL REFERENCES artists.artist (artist_id)
         ON DELETE CASCADE,
-    instrument_id INT NOT NULL REFERENCES lookups.base_instrument (base_inst_id)
+    instrument_id INT NOT NULL REFERENCES lookups.instrument (instrument_id)
         ON DELETE CASCADE,
     PRIMARY KEY (artist_id, instrument_id)
 );
@@ -37,8 +36,7 @@ CREATE TABLE artists.artist_instrument (
 -- Ensemble
 /* A group of musicians or performing artists considered as a single entity */
 CREATE TABLE artists.ensemble (
-    ensemble_id INT PRIMARY KEY REFERENCES artists.performer (performer_id)
-        ON DELETE CASCADE,
+    ensemble_id INT PRIMARY KEY REFERENCES artists.performer (performer_id),
     ensemble_name TEXT,
     year_founded INT NOT NULL
 );
@@ -59,10 +57,10 @@ CREATE TABLE artists.ensemble_member (
 
 /* Functions & Triggers */
 
--- generate_performer_id
+-- FUNCTION: generate_performer_id()
 /* Generate a performer ID for use as a primary key for an artist or ensemble */
 CREATE FUNCTION artists.generate_performer_id()
-    RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS $$
 DECLARE
     new_performer_id INT;
 BEGIN
@@ -93,10 +91,10 @@ CREATE TRIGGER insert_ensemble_id
     FOR EACH ROW
 EXECUTE FUNCTION artists.generate_performer_id();
 
--- delete_performer_id
+-- FUNCTION: delete_performer_id()
 /* Remove the corresponding performer ID from the performer table when an artist or ensemble is deleted */
 CREATE FUNCTION artists.delete_performer_id()
-    RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS $$
 BEGIN
     IF TG_TABLE_NAME = 'artist' THEN
         DELETE FROM artists.performer WHERE performer_id = OLD.artist_id;
