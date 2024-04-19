@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import config from '../config/server-config.json' assert { type: 'json' };
+import config from '../../config/server-config.json' assert { type: 'json' };
 
 // Configure middleware
 const app = express();
