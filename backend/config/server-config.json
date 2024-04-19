@@ -1,0 +1,5 @@
+{
+  "frontEndUrlRoot": "http://localhost:",
+  "frontEndPort": 5173,
+  "backEndPort": 8134
+}
