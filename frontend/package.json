@@ -12,6 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fontsource-variable/archivo": "^5.0.18",
+    "@fontsource-variable/oswald": "^5.0.19",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@tanstack/react-query": "^5.29.2",
